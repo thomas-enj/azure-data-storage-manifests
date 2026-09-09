@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: database-ns
+spec:
+  serviceName: mysql-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+        azure.workload.identity/use: "true" 
+    spec:
+      serviceAccountName: mysql-sa
+      
+      # Ciblage du Node pool spécifique (fait le lien avec Terraform)
+      nodeSelector:
+        workload: database
+        db_type: mysql
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "database"
+          effect: "NoSchedule"
+
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          
+          # MySQL lit son mot de passe root directement depuis le fichier injecté par le Key Vault
+          env:
+            - name: MYSQL_ROOT_PASSWORD_FILE
+              value: "/mnt/secrets/mysql-root-password"
+          ports:
+            - containerPort: 3306
+              name: mysql
+          
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            # Point de montage sécurisé pour les secrets du Key Vault
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets"
+              readOnly: true
+              
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "mysql-keyvault-sync"
+
+  # Création automatique du disque sur Azure pour la persistance des données MySQL
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: managed-csi # Utilise les disques standards d'AKS
+        resources:
+          requests:
+            storage: 10Gi

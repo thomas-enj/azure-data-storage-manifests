@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mysql-database
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/thomas-enj/azure-data-storage-manifests.git'
+    targetRevision: main
+    path: mysql
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: database-ns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
