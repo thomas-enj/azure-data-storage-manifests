@@ -52,7 +52,7 @@ spec:
         kubectl:
           image:
             repository: bitnami/kubectl@sha256
-            tag: "2f009b4cdc1ca0f4234ce24a4da9545987b37462f87fa56771b349af81ee2c80"
+            tag: "1.30.2-debian-12-r4"
 
   destination:
     server: 'https://kubernetes.default.svc'
