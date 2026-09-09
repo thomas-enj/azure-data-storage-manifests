@@ -23,7 +23,6 @@ spec:
         
         # 2. Configuration du stockage Azure
         configuration:
-          provider: azure
           backupStorageLocation:
             - name: default
               provider: azure
