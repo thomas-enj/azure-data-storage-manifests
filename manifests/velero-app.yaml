@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero-backup
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://vmware-tanzu.github.io/helm-charts'
+    targetRevision: 7.0.0 # Version du chart Helm
+    chart: velero
+    helm:
+      values: |
+        # 1. Ajout du plugin Azure indispensable
+        initContainers:
+          - name: velero-plugin-for-microsoft-azure
+            image: velero/velero-plugin-for-microsoft-azure:v1.9.0
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
+        
+        # 2. Configuration du stockage Azure
+        configuration:
+          provider: azure
+          backupStorageLocation:
+            - name: default
+              provider: azure
+              bucket: velero # Nom du conteneur créé par Terraform
+              config:
+                resourceGroup: tenjalbertRG
+                storageAccount: adsstgnonproductiw993
+                useEntraId: "true" # Indique l'utilisation de Workload Identity
+        
+        # 3. Zéro credential (pas de secret, l'identité est utilisée)
+        credentials:
+          useSecret: false
+        
+        # 4. Création du ServiceAccount autorisé côté Azure
+        serviceAccount:
+          server:
+            create: true
+            name: velero
+            annotations:
+              azure.workload.identity/client-id: "34f92443-ad07-4086-b9b6-5fb78d6e2cd0"
+        
+        # 5. Injection du jeton d'identité dans le Pod
+        podLabels:
+          azure.workload.identity/use: "true"
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: velero
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
