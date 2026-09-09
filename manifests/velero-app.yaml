@@ -51,8 +51,8 @@ spec:
         # 6. Forcer une version spécifique pour éviter l'erreur ImagePullBackOff
         kubectl:
           image:
-            repository: rancher/kubectl
-            tag: "v1.30.0"
+            repository: bitnami/kubectl@sha256
+            tag: "2f009b4cdc1ca0f4234ce24a4da9545987b37462f87fa56771b349af81ee2c80"
 
   destination:
     server: 'https://kubernetes.default.svc'
