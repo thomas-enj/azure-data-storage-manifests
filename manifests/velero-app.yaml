@@ -40,11 +40,38 @@ spec:
               provider: azure
               config:
                 resourceGroup: tenjalbertRG
+
+          # Le VolumeSnapshotter exige toujours AZURE_SUBSCRIPTION_ID/AZURE_RESOURCE_GROUP
+          # via un fichier de credentials, même sous Workload Identity (cf. extraObjects ci-dessous).
+          extraEnvVars:
+            AZURE_CREDENTIALS_FILE: /credentials/vsl/cloud
         
         # 3. Zéro credential (pas de secret, l'identité Workload Identity est utilisée)
         credentials:
           useSecret: false
-        
+
+        # 3bis. Fichier de credentials minimal (IDs non sensibles uniquement) pour le VolumeSnapshotter
+        extraObjects:
+          - apiVersion: v1
+            kind: Secret
+            metadata:
+              name: velero-vsl-ids
+              namespace: velero
+            type: Opaque
+            stringData:
+              cloud: |
+                AZURE_SUBSCRIPTION_ID=5e683e0f-b00c-48d6-9769-5aaf598de8f1
+                AZURE_RESOURCE_GROUP=tenjalbertRG
+
+        extraVolumes:
+          - name: vsl-ids
+            secret:
+              secretName: velero-vsl-ids
+        extraVolumeMounts:
+          - name: vsl-ids
+            mountPath: /credentials/vsl
+            readOnly: true
+
         # 4. Configuration du ServiceAccount et de l'identité managée
         serviceAccount:
           server:
