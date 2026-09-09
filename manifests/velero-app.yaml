@@ -30,6 +30,7 @@ spec:
               config:
                 resourceGroup: tenjalbertRG
                 storageAccount: adsstgnonproductiw993
+                subscriptionId: 5e683e0f-b00c-48d6-9769-5aaf598de8f1
                 useAAD: "true" # Indique l'utilisation de l'authentification Azure Active Directory
           
           volumeSnapshotLocation:
