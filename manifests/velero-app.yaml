@@ -51,9 +51,19 @@ spec:
             annotations:
               azure.workload.identity/client-id: "34f92443-ad07-4086-b9b6-5fb78d6e2cd0"
         
-        # 5. Injection du jeton d'identité dans le Pod
+        # 5. Configuration de l'identité managée pour le pod Velero
+        serviceAccount:
+          server:
+            create: true
+            name: velero
+            annotations:
+              azure.workload.identity/client-id: "34f92443-ad07-4086-b9b6-5fb78d6e2cd0"
+        
         podLabels:
           azure.workload.identity/use: "true"
+          
+        podAnnotations:
+          azure.workload.identity/inject: "true"
 
         # 6. Forcer une version spécifique pour éviter l'erreur ImagePullBackOff
         kubectl:
