@@ -51,7 +51,7 @@ spec:
         # 6. Forcer une version spécifique pour éviter l'erreur ImagePullBackOff
         kubectl:
           image:
-            repository: bitnami/kubectl@sha256
+            repository: bitnami/kubectl
             tag: "1.30.2-debian-12-r4"
 
   destination:
