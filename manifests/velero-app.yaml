@@ -39,16 +39,11 @@ spec:
               config:
                 resourceGroup: tenjalbertRG
         
-        # 3. Utilisation d'un secret requis par le plugin Azure pour les métadonnées (sans secret d'authentification)
+        # 3. Zéro credential (pas de secret, l'identité Workload Identity est utilisée)
         credentials:
-          useSecret: true
-          name: azure-credentials
-          secretContents:
-            cloud: |
-              AZURE_SUBSCRIPTION_ID: "5e683e0f-b00c-48d6-9769-5aaf598de8f1"
-              AZURE_RESOURCE_GROUP: "tenjalbertRG"
-
-        # 4. Configuration unique du ServiceAccount et de l'identité managée Workload Identity
+          useSecret: false
+        
+        # 4. Configuration du ServiceAccount et de l'identité managée
         serviceAccount:
           server:
             create: true
