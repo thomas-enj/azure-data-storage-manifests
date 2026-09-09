@@ -31,6 +31,12 @@ spec:
                 resourceGroup: tenjalbertRG
                 storageAccount: adsstgnonproductiw993
                 useEntraId: "true" # Indique l'utilisation de Workload Identity
+          
+          volumeSnapshotLocation:
+            - name: default
+              provider: azure
+              config:
+                resourceGroup: tenjalbertRG
         
         # 3. Zéro credential (pas de secret, l'identité est utilisée)
         credentials:
