@@ -14,9 +14,11 @@ spec:
     helm:
       values: |
         # 1. Ajout du plugin Azure indispensable
+        # v1.10.0+ required: v1.9.0 is built against velero v1.13.0, whose LoadCredentials()
+        # always errors on an empty credentials file, breaking Workload Identity (no-secret) auth
         initContainers:
           - name: velero-plugin-for-microsoft-azure
-            image: velero/velero-plugin-for-microsoft-azure:v1.9.0
+            image: velero/velero-plugin-for-microsoft-azure:v1.10.0
             volumeMounts:
               - mountPath: /target
                 name: plugins
