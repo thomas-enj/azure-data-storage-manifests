@@ -48,6 +48,12 @@ spec:
         podLabels:
           azure.workload.identity/use: "true"
 
+        # 6. Forcer une version spécifique pour éviter l'erreur ImagePullBackOff
+        kubectl:
+          image:
+            repository: bitnami/kubectl
+            tag: "1.30.0"
+
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: velero
