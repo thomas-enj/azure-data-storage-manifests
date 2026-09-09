@@ -30,7 +30,7 @@ spec:
               config:
                 resourceGroup: tenjalbertRG
                 storageAccount: adsstgnonproductiw993
-                useAAD: "useAAD" # Indique l'utilisation de Workload Identity via Azure Active Directory
+                useAAD: "true" # Indique l'utilisation de l'authentification Azure Active Directory
           
           volumeSnapshotLocation:
             - name: default
