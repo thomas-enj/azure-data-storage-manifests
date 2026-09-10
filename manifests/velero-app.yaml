@@ -44,8 +44,7 @@ spec:
           # Le VolumeSnapshotter exige toujours AZURE_SUBSCRIPTION_ID/AZURE_RESOURCE_GROUP
           # via un fichier de credentials, même sous Workload Identity (cf. extraObjects ci-dessous).
           extraEnvVars:
-            - name: AZURE_CREDENTIALS_FILE
-              value: /credentials/vsl/cloud
+            AZURE_CREDENTIALS_FILE: "/credentials/vsl/cloud"
         
         # 3. Zéro credential (pas de secret, l'identité Workload Identity est utilisée)
         credentials:
