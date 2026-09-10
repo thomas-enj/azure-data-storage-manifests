@@ -39,7 +39,7 @@ spec:
             - name: default
               provider: azure
               config:
-                resourceGroup: tenjalbertRG
+                resourceGroup: MC_tenjalbertRG_aks-ads-non-production_westeurope
 
           # Le VolumeSnapshotter exige toujours AZURE_SUBSCRIPTION_ID/AZURE_RESOURCE_GROUP
           # via un fichier de credentials, même sous Workload Identity (cf. extraObjects ci-dessous).
@@ -61,7 +61,7 @@ spec:
             stringData:
               cloud: |
                 AZURE_SUBSCRIPTION_ID=5e683e0f-b00c-48d6-9769-5aaf598de8f1
-                AZURE_RESOURCE_GROUP=tenjalbertRG
+                AZURE_RESOURCE_GROUP=MC_tenjalbertRG_aks-ads-non-production_westeurope
 
         extraVolumes:
           - name: vsl-ids
