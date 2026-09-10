@@ -79,7 +79,7 @@ spec:
             create: true
             name: velero
             annotations:
-              azure.workload.identity/client-id: "34f92443-ad07-4086-b9b6-5fb78d6e2cd0"
+              azure.workload.identity/client-id: "12508931-9f88-4058-aab9-74135105fbff"
         
         podLabels:
           azure.workload.identity/use: "true"
