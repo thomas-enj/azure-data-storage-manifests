@@ -31,7 +31,7 @@ spec:
               bucket: velero # Nom du conteneur créé par Terraform
               config:
                 resourceGroup: tenjalbertRG
-                storageAccount: adsstgnonproductiwhtg
+                storageAccount: adsstgnonproductiftpi
                 subscriptionId: 5e683e0f-b00c-48d6-9769-5aaf598de8f1
                 useAAD: "true" # Indique l'utilisation de l'authentification Azure Active Directory
           
@@ -78,7 +78,7 @@ spec:
             create: true
             name: velero
             annotations:
-              azure.workload.identity/client-id: "12508931-9f88-4058-aab9-74135105fbff"
+              azure.workload.identity/client-id: "29f9d359-3110-466b-b8b3-6823d15f93c8"
         
         podLabels:
           azure.workload.identity/use: "true"
